@@ -56,7 +56,7 @@ func formatJwt(kind string, jwtString string) ([]byte, error) {
 //  NKEYs are sensitive and should be treated as secrets.
 //
 //  -----BEGIN USER NKEY SEED-----
-//  SUAIO3FHUX5PNV2LQIIP7TZ3N4L7TX3W53MQGEIVYFIGA635OZCKEYHFLM
+//  5980acd2f038f5b449fb28367d28c01fe0dec4881b0f69fef9561383380c4ead2fbe861179eb233248433a
 //  ------END USER NKEY SEED------
 func DecorateSeed(seed []byte) ([]byte, error) {
 	w := bytes.NewBuffer(nil)
@@ -64,11 +64,11 @@ func DecorateSeed(seed []byte) ([]byte, error) {
 	pre := string(ts[0:2])
 	kind := ""
 	switch pre {
-	case "SU":
+	case "59":
 		kind = "USER"
-	case "SA":
+	case "5a":
 		kind = "ACCOUNT"
-	case "SO":
+	case "50":
 		kind = "OPERATOR"
 	default:
 		return nil, errors.New("seed is not an operator, account or user seed")
@@ -109,7 +109,7 @@ var userConfigRE = regexp.MustCompile(`\s*(?:(?:[-]{3,}.*[-]{3,}\r?\n)([\w\-.=]+
 //  NKEYs are sensitive and should be treated as secrets.
 //
 //  -----BEGIN USER NKEY SEED-----
-//  SUAIO3FHUX5PNV2LQIIP7TZ3N4L7TX3W53MQGEIVYFIGA635OZCKEYHFLM
+//  5980acd2f038f5b449fb28367d28c01fe0dec4881b0f69fef9561383380c4ead2fbe861179eb233248433a
 //  ------END USER NKEY SEED------
 
 // FormatUserConfig returns a decorated file with a decorated JWT and decorated seed
@@ -132,7 +132,7 @@ func FormatUserConfig(jwtString string, seed []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	if !bytes.HasPrefix(bytes.TrimSpace(seed), []byte("SU")) {
+	if !bytes.HasPrefix(bytes.TrimSpace(seed), []byte("59")) {
 		return nil, fmt.Errorf("nkey seed is not an user seed")
 	}
 
@@ -173,9 +173,9 @@ func ParseDecoratedNKey(contents []byte) (nkeys.KeyPair, error) {
 	} else {
 		lines := bytes.Split(contents, []byte("\n"))
 		for _, line := range lines {
-			if bytes.HasPrefix(bytes.TrimSpace(line), []byte("SO")) ||
-				bytes.HasPrefix(bytes.TrimSpace(line), []byte("SA")) ||
-				bytes.HasPrefix(bytes.TrimSpace(line), []byte("SU")) {
+			if bytes.HasPrefix(bytes.TrimSpace(line), []byte("50")) ||
+				bytes.HasPrefix(bytes.TrimSpace(line), []byte("5a")) ||
+				bytes.HasPrefix(bytes.TrimSpace(line), []byte("59")) {
 				seed = line
 				break
 			}
@@ -184,9 +184,9 @@ func ParseDecoratedNKey(contents []byte) (nkeys.KeyPair, error) {
 	if seed == nil {
 		return nil, errors.New("no nkey seed found")
 	}
-	if !bytes.HasPrefix(seed, []byte("SO")) &&
-		!bytes.HasPrefix(seed, []byte("SA")) &&
-		!bytes.HasPrefix(seed, []byte("SU")) {
+	if !bytes.HasPrefix(seed, []byte("50")) &&
+		!bytes.HasPrefix(seed, []byte("5a")) &&
+		!bytes.HasPrefix(seed, []byte("59")) {
 		return nil, errors.New("doesn't contain a seed nkey")
 	}
 	kp, err := nkeys.FromSeed(seed)
@@ -207,7 +207,7 @@ func ParseDecoratedUserNKey(contents []byte) (nkeys.KeyPair, error) {
 	if err != nil {
 		return nil, err
 	}
-	if !bytes.HasPrefix(seed, []byte("SU")) {
+	if !bytes.HasPrefix(seed, []byte("59")) {
 		return nil, errors.New("doesn't contain an user seed nkey")
 	}
 	kp, err := nkeys.FromSeed(seed)

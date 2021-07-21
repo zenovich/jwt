@@ -78,11 +78,11 @@ func validateSeed(t *testing.T, decorated []byte, nk nkeys.KeyPair) {
 	kind := ""
 	seed := seedKey(nk, t)
 	switch string(seed[0:2]) {
-	case "SO":
+	case "50":
 		kind = "operator"
-	case "SA":
+	case "5a":
 		kind = "account"
-	case "SU":
+	case "59":
 		kind = "user"
 	default:
 		kind = "not supported"

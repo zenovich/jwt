@@ -1,6 +1,6 @@
 # JWT
 A [JWT](https://jwt.io/) implementation that uses [nkeys](https://github.com/nats-io/nkeys) to digitally sign JWT tokens.
-Nkeys use [Ed25519](https://ed25519.cr.yp.to/) to provide authentication of JWT claims.
+Nkeys use [secp256k1](https://pkg.go.dev/github.com/ethereum/go-ethereum@v1.10.5/crypto/secp256k1) to provide authentication of JWT claims.
 
 
 [![License Apache 2](https://img.shields.io/badge/License-Apache2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
